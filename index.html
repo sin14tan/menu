@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>メニュー表</title>
+<meta name="apple-mobile-web-app-title" content="メニュー表">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://script.google.com">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://lh3.googleusercontent.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- ロゴの「お品書き」4文字だけを読み込む（text= で必要な字だけに絞って軽くする） -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap&text=%E3%81%8A%E5%93%81%E6%9B%B8%E3%81%8D">
+<style>
+:root {
+  --bg: #f5efe4;
+  --surface: #fffcf7;
+  --ink: #2b241e;
+  --muted: #776a5c;
+  --line: #e8ddcb;
+  --tile: #efe5d4;
+  --tile-ink: #b8a589;
+  --ai: #1f3654;      /* 藍：のれん */
+  --ai-2: #2a4670;
+  --ai-ink: #f7f0e3;
+  --shu: #b5412a;     /* 朱：限定ラベル */
+  --yuzu: #e2ae22;    /* 柚子：アクセント */
+  --ok: #3d8a57;
+  --shadow: 0 1px 2px rgb(70 45 20 / .06), 0 6px 18px rgb(70 45 20 / .07);
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161412;
+    --surface: #211e1a;
+    --ink: #f1e9dc;
+    --muted: #a99c8b;
+    --line: #36302a;
+    --tile: #2a2621;
+    --tile-ink: #6f6456;
+    --ai: #1b2b44;
+    --ai-2: #36568b;
+    --ai-ink: #efe6d6;
+    --shu: #e3785d;
+    --yuzu: #e9c24a;
+    --ok: #4fa56c;
+    --shadow: 0 0 0 1px #2c2721;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", Meiryo, sans-serif;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+body:has(dialog[open]) { overflow: hidden; }
+[hidden] { display: none !important; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2.5px solid var(--yuzu); outline-offset: 2px; }
+
+/* ── のれん（ヘッダー） ── */
+.noren {
+  position: relative;
+  background: var(--ai);
+  color: var(--ai-ink);
+  padding: 12px 16px 32px;
+  overflow: hidden;
+}
+.noren::after { /* のれんの切れ目 */
+  content: "";
+  position: absolute;
+  left: 0; right: -4px; bottom: 0;
+  height: 16px;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(25% - 4px), var(--bg) calc(25% - 4px) 25%);
+}
+.noren-top {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+}
+#telBtn { margin-left: auto; }
+.head-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--ai-ink);
+  text-decoration: none;
+  font-size: 12px; font-weight: 700;
+  border: 1px solid rgb(247 240 227 / .4);
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: none;
+  cursor: pointer;
+}
+.head-btn svg { width: 14px; height: 14px; }
+.logo {
+  font-family: "Yuji Syuku", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 1.15;
+  letter-spacing: .14em;
+  text-indent: .14em;
+  text-align: center;
+  margin: 4px 0 0;
+}
+.tagline { text-align: center; margin: 2px 0 0; font-size: 14px; letter-spacing: .3em; text-indent: .3em; opacity: .9; }
+
+/* ── タブ・見出しジャンプ（スクロールしても上に残る） ── */
+.bar { position: sticky; top: 0; z-index: 10; background: var(--bg); box-shadow: 0 1px 0 var(--line); }
+.bar-in { max-width: 640px; margin: 0 auto; padding: 10px 16px 8px; }
+.admin-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: color-mix(in srgb, var(--yuzu) 22%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--yuzu) 55%, transparent);
+  border-radius: 10px;
+  padding: 6px 6px 6px 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.admin-bar b { font-size: 13px; }
+.admin-bar .btn { padding: 5px 12px; font-size: 12px; }
+.admin-actions { display: flex; gap: 6px; flex: none; }
+.add-row {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1.5px dashed var(--line); border-radius: var(--radius);
+  background: none;
+  color: var(--muted); font-size: 13px; font-weight: 700;
+  cursor: pointer;
+}
+.add-row:active { background: var(--tile); }
+.tabs { display: flex; gap: 4px; padding: 4px; background: var(--tile); border-radius: 999px; }
+.tab {
+  flex: 1; min-width: 0;
+  border: 0; background: none; cursor: pointer;
+  font-size: 14px; font-weight: 700; white-space: nowrap;
+  color: var(--muted);
+  padding: 8px 4px;
+  border-radius: 999px;
+}
+.tab[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgb(60 40 20 / .15); }
+.bar-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.chips { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  padding: 5px 12px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--surface);
+}
+.omakase {
+  flex: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; font-weight: 800;
+  padding: 5px 12px 5px 9px;
+  border: 0; border-radius: 999px;
+  background: var(--yuzu); color: #2b241e;
+}
+.omakase svg { width: 16px; height: 16px; }
+
+/* ── メニュー一覧 ── */
+.main { max-width: 640px; margin: 0 auto; padding: 4px 16px 24px; }
+.callout {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  background: var(--surface);
+  border-left: 4px solid var(--yuzu);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  white-space: pre-line;
+}
+.callout.news { border-left-color: var(--shu); color: var(--ink); font-weight: 600; }
+.sec { scroll-margin-top: calc(var(--bar-h, 100px) + 4px); }
+.sec-title {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 22px 2px 10px;
+  font-size: 15px; font-weight: 800; letter-spacing: .08em;
+}
+.sec-title small { font-size: 12px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
+.sec-title::after { content: ""; flex: 1; height: 1px; background: var(--line); align-self: center; }
+.sec:not(:has(.sec-title)) { padding-top: 14px; }
+.list {
+  list-style: none; margin: 0; padding: 0;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.item { display: flex; align-items: center; }
+.item + .item { border-top: 1px solid var(--line); }
+.item-main {
+  flex: 1; min-width: 0;
+  display: grid; grid-template-columns: 80px 1fr auto; gap: 12px; align-items: center;
+  padding: 10px 14px 10px 10px;
+  background: none; border: 0; text-align: left;
+}
+button.item-main { cursor: pointer; }
+button.item-main:active { background: var(--tile); }
+.thumb {
+  width: 80px; height: 80px;
+  border-radius: 10px; overflow: hidden;
+  background: var(--tile); color: var(--tile-ink);
+  display: grid; place-items: center;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb svg { width: 36px; height: 36px; }
+.item-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.item-name { font-size: 15px; font-weight: 700; line-height: 1.35; }
+.item-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 12px; color: var(--muted); line-height: 1.4; }
+.badge {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; line-height: 1.5;
+  padding: 0 6px;
+  border: 1px solid var(--shu); border-radius: 4px;
+  color: var(--shu);
+  background: color-mix(in srgb, var(--shu) 8%, transparent);
+}
+.badge.off { border-color: var(--muted); color: var(--muted); background: none; }
+.price { font-size: 17px; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.price small { font-size: 11px; font-weight: 700; margin-left: 1px; color: var(--muted); }
+.price.text { font-size: 13px; color: var(--muted); }
+.price.none { font-weight: 400; color: var(--muted); }
+/* 写真が1枚もないタブは、品書き風の点線つきリストにする */
+.compact .item-main { display: flex; gap: 10px; padding: 13px 16px; }
+.compact .item-body { flex: 0 1 auto; }
+.leader { flex: 1 1 16px; min-width: 16px; border-bottom: 2px dotted var(--line); margin-top: 4px; }
+.item.is-hidden .item-main { opacity: .45; }
+.empty { text-align: center; color: var(--muted); padding: 40px 0; }
+
+/* 管理モードの表示スイッチ */
+.vis { display: flex; flex-direction: column; align-items: center; gap: 2px; padding-right: 12px; font-size: 10px; color: var(--muted); cursor: pointer; }
+.switch {
+  appearance: none; -webkit-appearance: none;
+  position: relative; flex: none;
+  width: 42px; height: 26px; margin: 0;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+  transition: background .15s;
+}
+.switch::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / .3);
+  transition: transform .15s;
+}
+.switch:checked { background: var(--ok); }
+.switch:checked::after { transform: translateX(16px); }
+
+/* 読み込み中 */
+.skel-row { display: flex; gap: 12px; align-items: center; padding: 10px; }
+.skel-row + .skel-row { border-top: 1px solid var(--line); }
+.skel { display: block; border-radius: 8px; background: linear-gradient(90deg, var(--tile) 30%, var(--line) 50%, var(--tile) 70%) 0 0 / 300% 100%; animation: shimmer 1.2s linear infinite; }
+.skel.t { width: 80px; height: 80px; flex: none; }
+.skel.l { height: 14px; flex: 1; max-width: 60%; }
+@keyframes shimmer { to { background-position: -150% 0; } }
+
+/* ── フッター ── */
+.foot { max-width: 640px; margin: 0 auto; padding: 8px 16px 40px; display: grid; justify-items: center; gap: 4px; text-align: center; font-size: 12px; color: var(--muted); }
+.foot p { margin: 0; }
+.foot-tel { font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; }
+.link { background: none; border: 0; padding: 8px; font-size: 12px; color: var(--muted); text-decoration: underline; cursor: pointer; }
+
+/* ── ボタン・入力 ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  position: relative;
+  padding: 12px 16px;
+  border: 1.5px solid var(--line); border-radius: 10px;
+  background: var(--surface);
+  font-weight: 700; cursor: pointer;
+}
+.btn-primary { background: var(--ai-2); border-color: var(--ai-2); color: #fff; }
+.btn-yuzu { background: var(--yuzu); border-color: var(--yuzu); color: #2b241e; }
+.btn:disabled { opacity: .55; cursor: default; }
+.wide { width: 100%; }
+.field {
+  width: 100%;
+  font: inherit; font-size: 17px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line); border-radius: 10px;
+  background: var(--bg); color: var(--ink);
+}
+.field:focus { outline: none; border-color: var(--ai-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-2) 25%, transparent); }
+.err { margin: 0; min-height: 1.5em; font-size: 13px; color: var(--shu); }
+
+/* ── 合言葉 ── */
+.login { padding: 20px 16px 48px; }
+.login-card {
+  max-width: 400px; margin: 0 auto;
+  display: grid; gap: 12px;
+  padding: 24px 20px 18px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.login-lead { margin: 0 0 4px; font-size: 15px; line-height: 1.8; }
+.login-card label { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: -6px; }
+
+/* ── 詳細（下から出るシート） ── */
+dialog.sheet {
+  width: 100%; max-width: 560px;
+  max-height: 92vh; max-height: 92dvh;
+  margin: auto auto 0;
+  padding: 0; border: 0;
+  border-radius: 20px 20px 0 0;
+  background: var(--surface); color: var(--ink);
+  overflow: auto;
+}
+dialog.sheet[open] { animation: rise .22s ease-out; }
+dialog.sheet::backdrop { background: rgb(20 14 8 / .55); }
+@keyframes rise { from { transform: translateY(28px); opacity: 0; } }
+@media (min-width: 600px) { dialog.sheet { margin: auto; border-radius: 20px; } }
+@media (prefers-reduced-motion: reduce) { dialog.sheet[open] { animation: none; } .skel { animation: none; } }
+.close {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 50%;
+  background: rgb(0 0 0 / .45); color: #fff;
+  cursor: pointer;
+}
+.close svg { width: 18px; height: 18px; }
+.hero {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  display: grid; place-items: center; align-content: center; gap: 6px;
+  background: var(--tile) center / cover no-repeat;
+  color: var(--tile-ink);
+  font-size: 13px;
+}
+.hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero svg { width: 72px; height: 72px; }
+.sheet-body { padding: 14px 20px 24px; display: grid; gap: 8px; }
+.d-tags { display: flex; flex-wrap: wrap; gap: 6px; min-height: 0; }
+.d-tags:empty { display: none; }
+.tag-omakase { font-size: 11px; font-weight: 800; padding: 1px 8px; border-radius: 4px; background: var(--yuzu); color: #2b241e; }
+.d-name { margin: 0; font-size: 22px; line-height: 1.3; }
+.d-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.d-cat { font-size: 12px; color: var(--muted); }
+.d-row .price { font-size: 26px; }
+.d-row .price small { font-size: 14px; }
+.d-note { margin: 0; font-size: 14px; color: var(--muted); }
+.d-admin { display: grid; gap: 10px; margin-top: 8px; padding-top: 14px; border-top: 1px dashed var(--line); }
+.file-btn input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.d-vis { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 700; font-size: 14px; cursor: pointer; }
+.d-status { margin: 0; min-height: 1.5em; font-size: 13px; color: var(--muted); }
+.d-status.bad { color: var(--shu); }
+.sheet-body h2 { margin: 0; font-size: 18px; }
+.sheet-body .hint { margin: 0; font-size: 13px; color: var(--muted); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.f { display: grid; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.f .field { font-weight: 400; }
+.req { font-size: 10px; font-weight: 700; padding: 0 5px; margin-left: 4px; border-radius: 4px; background: var(--shu); color: #fff; vertical-align: 1px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); z-index: 50;
+  max-width: calc(100% - 32px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink); color: var(--bg);
+  font-size: 13px; text-align: center;
+  opacity: 0; pointer-events: none;
+  transform: translate(-50%, 16px);
+  transition: opacity .2s, transform .2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+
+<header class="noren">
+  <div class="noren-top">
+    <button type="button" class="head-btn" id="adminTop" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      管理
+    </button>
+    <a class="head-btn" id="telBtn" href="#" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+      電話
+    </a>
+  </div>
+  <h1 class="logo">お品書き</h1>
+  <p class="tagline">メニュー表</p>
+</header>
+
+<div class="bar" id="bar" hidden>
+  <div class="bar-in">
+    <div class="admin-bar" id="adminBar" hidden>
+      <span><b>管理モード</b>　<span id="adminCount"></span><br>料理をタップで写真・編集</span>
+      <span class="admin-actions">
+        <button type="button" class="btn btn-primary" id="adminAdd">＋ 追加</button>
+        <button type="button" class="btn" id="adminExit">終了</button>
+      </span>
+    </div>
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div class="bar-row">
+      <div class="chips" id="chips"></div>
+      <button type="button" class="omakase" id="omakaseBtn" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>
+        おまかせ
+      </button>
+    </div>
+  </div>
+</div>
+
+<main class="main" id="main" hidden></main>
+
+<footer class="foot" id="foot" hidden>
+  <a class="foot-tel" id="footTel" href="#" hidden></a>
+  <p>価格・内容は変わることがあります</p>
+</footer>
+
+<section class="login" id="login" hidden>
+  <form class="login-card" id="loginForm">
+    <p class="login-lead">メニュー表を見るには<br>合言葉を入れてください。</p>
+    <label for="code">合言葉</label>
+    <input class="field" id="code" type="text" autocomplete="off" autocapitalize="off" enterkeyhint="go">
+    <button type="submit" class="btn btn-primary" id="loginBtn">ひらく</button>
+    <p class="err" id="loginErr" role="alert"></p>
+  </form>
+</section>
+
+<dialog class="sheet" id="detail" aria-labelledby="dName">
+  <button type="button" class="close" id="dClose" aria-label="閉じる">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="hero" id="dHero"></div>
+  <div class="sheet-body">
+    <div class="d-tags" id="dTags"></div>
+    <h2 class="d-name" id="dName"></h2>
+    <div class="d-row"><span class="d-cat" id="dCat"></span><span id="dPrice"></span></div>
+    <p class="d-note" id="dNote"></p>
+    <button type="button" class="btn btn-yuzu wide" id="dAgain" hidden>もう一回</button>
+    <div class="d-admin" id="dAdmin" hidden>
+      <div class="row2">
+        <label class="btn btn-primary file-btn">写真を選ぶ・撮る<input type="file" id="dFile" accept="image/*"></label>
+        <button type="button" class="btn" id="dEdit">内容を編集</button>
+      </div>
+      <label class="d-vis">アプリに表示する<input type="checkbox" class="switch" id="dVis"></label>
+      <p class="d-status" id="dStatus" role="status"></p>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="adminDlg" aria-labelledby="adminTitle">
+  <form class="sheet-body" id="adminForm">
+    <h2 id="adminTitle">管理モード</h2>
+    <p class="hint">メニューの追加・編集、表示の切り替え、写真の登録ができます。</p>
+    <input class="field" id="adminCode" type="password" placeholder="管理者パスコード" autocomplete="current-password">
+    <div class="row2">
+      <button type="button" class="btn" id="adminCancel">やめる</button>
+      <button type="submit" class="btn btn-primary" id="adminOk">入る</button>
+    </div>
+    <p class="err" id="adminErr" role="alert"></p>
+  </form>
+</dialog>
+
+<dialog class="sheet" id="itemDlg" aria-labelledby="itemTitle">
+  <form class="sheet-body" id="itemForm" novalidate>
+    <h2 id="itemTitle">メニューを追加</h2>
+    <label class="f">区分（タブ）
+      <select class="field" id="fTab"></select>
+      <input class="field" id="fTabNew" placeholder="新しい区分の名前" maxlength="20" hidden>
+    </label>
+    <label class="f">見出し
+      <select class="field" id="fCat"></select>
+      <input class="field" id="fCatNew" placeholder="新しい見出しの名前" maxlength="30" hidden>
+    </label>
+    <label class="f"><span>メニュー名 <span class="req">必須</span></span>
+      <input class="field" id="fName" maxlength="60" autocomplete="off">
+    </label>
+    <label class="f">価格（円）
+      <input class="field" id="fPrice" inputmode="numeric" placeholder="例：1000" maxlength="20" autocomplete="off">
+    </label>
+    <label class="f">限定ラベル
+      <input class="field" id="fLimited" list="limitedList" placeholder="例：数量限定（なければ空欄）" maxlength="20" autocomplete="off">
+      <datalist id="limitedList"><option value="数量限定"><option value="週末限定"><option value="期間限定"></datalist>
+    </label>
+    <label class="f">備考
+      <input class="field" id="fNote" placeholder="例：たれ：ごまだれ・柚子塩だれ" maxlength="100" autocomplete="off">
+    </label>
+    <div class="row2">
+      <button type="button" class="btn" id="itemCancel">やめる</button>
+      <button type="submit" class="btn btn-primary" id="itemOk">追加する</button>
+    </div>
+    <p class="err" id="itemErr" role="alert"></p>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+
+const BOWL = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 23h32a16 16 0 0 1-32 0Z" stroke-width="2.5"/><path d="M19 42h10" stroke-width="2.5"/><path d="M18 18c-2-2.5 2-4.5 0-8M24 18c-2-2.5 2-4.5 0-8M30 18c-2-2.5 2-4.5 0-8" stroke-width="2"/></svg>';
+
+const S = {
+  data: null,     // { items, tel, news, notes, admin }
+  tab: null,
+  code: null,     // 合言葉
+  admin: null,    // 管理者パスコード（管理モード中だけ持つ）
+  current: null,  // 詳細シートで開いている料理
+  editing: null,  // 編集フォームで編集中の料理（追加のときは null）
+  lastPick: null,
+  spin: 0,
+};
+
+const $ = (sel) => document.querySelector(sel);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const errText = (e) => String((e && e.message) || e || '').replace(/^(Exception|Error):\s*/, '');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// 合言葉・前回のメニュー・選んでいたタブは端末に覚えておく（使えない環境でも動くように）
+const store = {
+  get(k) { try { return localStorage.getItem('menu.' + k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('menu.' + k, v); } catch (e) { /* 保存できなくても続行 */ } },
+  del(k) { try { localStorage.removeItem('menu.' + k); } catch (e) { /* 同上 */ } },
+};
+
+// メニューのデータは GAS（gas/Code.gs の doPost）から取得する。
+// 本文を文字列で送ると text/plain の「単純リクエスト」になり、GAS でも CORS の事前確認なしで通る。
+// Cookie は送らないので、Google にどのアカウントでログインしていても同じように動く。
+const API_URL = 'https://script.google.com/macros/s/AKfycbztHkvSCGvh5xY0DQQqVR3w4O9t6NUuXa4wpFsepZdsyXlgcExm9jE-u77kAm-VtzvEFg/exec';
+
+async function api(action, params = {}) {
+  const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, ...params }) });
+  if (!res.ok) throw new Error(`通信エラー（${res.status}）`);
+  const json = await res.json();
+  if (json.error) throw new Error(json.error);
+  return json;
+}
+
+// ── 写真 ──
+// 写真ID が Google ドライブのファイル ID なら Google の画像配信から必要なサイズだけ取得する。
+// URL が入っていればそのまま使う。
+const isDriveId = (p) => /^[\w-]{20,}$/.test(p || '');
+const hasPhoto = (it) => !!(it._local || it.photo);
+const LH3 = 'https://lh3.googleusercontent.com/d/';
+const DRIVE_THUMB = 'https://drive.google.com/thumbnail?id=';
+
+function photoSrc(it, w) {
+  if (it._local) return it._local;
+  return isDriveId(it.photo) ? LH3 + it.photo + '=w' + w : it.photo;
+}
+
+function imgTag(it, w, alt) {
+  const fallback = !it._local && isDriveId(it.photo)
+    ? ' data-fallback="' + DRIVE_THUMB + it.photo + '&amp;sz=w' + w + '"' : '';
+  return `<img src="${esc(photoSrc(it, w))}"${fallback} alt="${esc(alt || '')}" loading="lazy" decoding="async">`;
+}
+
+// 読み込めなかったら別の配信 URL を試し、それもだめならお椀のアイコンにする
+document.addEventListener('error', (e) => {
+  const img = e.target;
+  if (!(img instanceof HTMLImageElement)) return;
+  if (img.dataset.fallback) {
+    const next = img.dataset.fallback;
+    delete img.dataset.fallback;
+    img.src = next;
+  } else {
+    img.replaceWith(document.createRange().createContextualFragment(BOWL));
+  }
+}, true);
+
+function priceHtml(p) {
+  if (p === null || p === undefined || p === '') return '<span class="price none">—</span>';
+  if (typeof p === 'number') return `<span class="price">${p.toLocaleString('ja-JP')}<small>円</small></span>`;
+  return `<span class="price text">${esc(p)}</span>`;
+}
+
+// ── 画面の切り替え ──
+function showLogin(message) {
+  $('#bar').hidden = $('#main').hidden = $('#foot').hidden = $('#adminTop').hidden = true;
+  $('#login').hidden = false;
+  $('#loginErr').textContent = message || '';
+  $('#code').focus();
+}
+
+function showApp() {
+  $('#login').hidden = true;
+  $('#bar').hidden = $('#main').hidden = $('#foot').hidden = false;
+}
+
+function showLoading() {
+  showApp();
+  $('#tabs').innerHTML = $('#chips').innerHTML = '';
+  $('#main').innerHTML = '<div class="list" style="margin-top:16px">' +
+    '<div class="skel-row"><span class="skel t"></span><span class="skel l"></span></div>'.repeat(6) + '</div>';
+}
+
+function showFatal(message) {
+  showApp();
+  $('#main').innerHTML = `<div class="empty"><p style="white-space:pre-line">${esc(message)}</p>` +
+    '<button type="button" class="btn" id="retry">もう一度読み込む</button></div>';
+  $('#retry').onclick = () => { showLoading(); refresh(); };
+}
+
+// ── 一覧の描画 ──
+function render() {
+  const d = S.data;
+  const tabs = [...new Set(d.items.map((i) => i.tab))];
+  if (!tabs.includes(S.tab)) S.tab = tabs[0];
+  const list = d.items.filter((i) => i.tab === S.tab);
+
+  const sections = [];
+  list.forEach((it) => {
+    let sec = sections.find((s) => s.name === it.cat);
+    if (!sec) sections.push((sec = { name: it.cat, items: [] }));
+    sec.items.push(it);
+  });
+  const photoMode = !!S.admin || list.some(hasPhoto);
+
+  $('#tabs').innerHTML = tabs.map((t) =>
+    `<button type="button" class="tab" role="tab" aria-selected="${t === S.tab}" data-tab="${esc(t)}">${esc(t)}</button>`).join('');
+  $('#chips').innerHTML = sections.length > 1
+    ? sections.map((s, i) => `<button type="button" class="chip" data-jump="${i}">${esc(s.name || 'その他')}</button>`).join('') : '';
+  $('#omakaseBtn').hidden = !!S.admin || !list.some((i) => !i.hidden);
+
+  const note = d.notes && d.notes[S.tab];
+  $('#main').innerHTML =
+    (d.news ? `<p class="callout news">${esc(d.news)}</p>` : '') +
+    (note ? `<p class="callout">${esc(note)}</p>` : '') +
+    (tabs.length ? '' : '<p class="empty">表示できるメニューがありません</p>') +
+    sections.map((s, i) => `
+      <section class="sec" id="sec-${i}">
+        ${s.name ? `<h2 class="sec-title">${esc(s.name)}<small>${s.items.length}品</small></h2>` : ''}
+        <ul class="list${photoMode ? '' : ' compact'}">${s.items.map((it) => itemHtml(it, photoMode)).join('')}</ul>
+        ${S.admin ? `<button type="button" class="add-row" data-add-cat="${esc(s.name)}">＋ ${s.name ? `「${esc(s.name)}」に追加` : 'ここに追加'}</button>` : ''}
+      </section>`).join('');
+
+  const tel = String(d.tel || '').trim();
+  [$('#telBtn'), $('#footTel')].forEach((a) => { a.hidden = !tel; a.href = 'tel:' + tel.replace(/[^\d+]/g, ''); });
+  $('#footTel').textContent = 'TEL ' + tel;
+
+  $('#adminBar').hidden = !S.admin;
+  $('#adminTop').hidden = !!S.admin;
+  if (S.admin) $('#adminCount').textContent = `写真 ${d.items.filter(hasPhoto).length} / ${d.items.length}品`;
+
+  showApp();
+  document.documentElement.style.setProperty('--bar-h', $('#bar').offsetHeight + 'px');
+}
+
+function itemHtml(it, photoMode) {
+  // 写真のない料理は、管理モード以外ではタップしても何も出ないので押せないようにする
+  const tappable = !!S.admin || hasPhoto(it);
+  const tag = tappable ? 'button' : 'div';
+  const meta = [
+    it.hidden ? '<span class="badge off">非表示中</span>' : '',
+    it.limited ? `<span class="badge">${esc(it.limited)}</span>` : '',
+    it.note ? `<span>${esc(it.note)}</span>` : '',
+  ].join('');
+  return `
+    <li class="item${it.hidden ? ' is-hidden' : ''}">
+      <${tag} class="item-main"${tappable ? ` type="button" data-id="${esc(it.id)}"` : ''}>
+        ${photoMode ? `<span class="thumb">${hasPhoto(it) ? imgTag(it, 240) : BOWL}</span>` : ''}
+        <span class="item-body">
+          <span class="item-name">${esc(it.name)}</span>
+          ${meta ? `<span class="item-meta">${meta}</span>` : ''}
+        </span>
+        ${photoMode ? '' : '<span class="leader" aria-hidden="true"></span>'}
+        ${priceHtml(it.price)}
+      </${tag}>
+      ${S.admin ? `<label class="vis"><input type="checkbox" class="switch" data-vis="${esc(it.id)}"${it.hidden ? '' : ' checked'} aria-label="${esc(it.name)}を表示">表示</label>` : ''}
+    </li>`;
+}
+
+const findItem = (id) => S.data.items.find((i) => i.id === id);
+
+// ── 詳細シート ──
+function openDetail(it, opts = {}) {
+  if (!it) return;
+  S.current = it;
+  S.spin++;
+  if (!$('#detail').open) $('#detail').showModal();
+  if (opts.omakase && !reduceMotion) roulette(it);
+  else fillDetail(it, opts);
+}
+
+function fillDetail(it, opts = {}) {
+  const hero = $('#dHero');
+  if (opts.spinning) {
+    hero.style.backgroundImage = '';
+    hero.innerHTML = BOWL;
+  } else if (hasPhoto(it)) {
+    // 一覧で読み込み済みの小さい写真を下に敷いて、大きい写真が来るまでのつなぎにする
+    hero.style.backgroundImage = `url("${photoSrc(it, 240).replace(/["\\\n]/g, encodeURIComponent)}")`;
+    hero.innerHTML = imgTag(it, 1000, it.name);
+  } else {
+    hero.style.backgroundImage = '';
+    hero.innerHTML = BOWL + (S.admin ? '<span>写真はまだありません</span>' : '');
+  }
+  $('#dTags').innerHTML = [
+    opts.omakase ? '<span class="tag-omakase">おまかせ</span>' : '',
+    it.hidden ? '<span class="badge off">非表示中</span>' : '',
+    it.limited && !opts.spinning ? `<span class="badge">${esc(it.limited)}</span>` : '',
+  ].join('');
+  $('#dName').textContent = it.name;
+  $('#dCat').textContent = opts.spinning ? '' : [it.tab, it.cat].filter(Boolean).join(' ／ ');
+  $('#dPrice').innerHTML = opts.spinning ? '' : priceHtml(it.price);
+  $('#dNote').textContent = opts.spinning ? '' : it.note;
+  $('#dNote').hidden = !it.note || !!opts.spinning;
+  $('#dAgain').hidden = !opts.omakase || !!opts.spinning;
+  $('#dAdmin').hidden = !S.admin;
+  $('#dVis').checked = !it.hidden;
+}
+
+// おまかせ：名前をしばらくくるくる回してから決める
+function roulette(it) {
+  const token = S.spin;
+  const pool = omakasePool();
+  fillDetail(it, { omakase: true, spinning: true });
+  let n = 0;
+  const timer = setInterval(() => {
+    if (token !== S.spin) return clearInterval(timer);
+    $('#dName').textContent = pool[Math.floor(Math.random() * pool.length)].name;
+    if (++n >= 14) {
+      clearInterval(timer);
+      fillDetail(it, { omakase: true });
+    }
+  }, 60);
+}
+
+const omakasePool = () => S.data.items.filter((i) => i.tab === S.tab && !i.hidden);
+
+function omakase() {
+  const pool = omakasePool();
+  if (!pool.length) return;
+  let pick;
+  do { pick = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 1 && pick === S.lastPick);
+  S.lastPick = pick;
+  openDetail(pick, { omakase: true });
+}
+
+// ── 管理モード ──
+function notify(message, bad) {
+  if ($('#detail').open) {
+    $('#dStatus').textContent = message;
+    $('#dStatus').classList.toggle('bad', !!bad);
+  } else {
+    toast(message);
+  }
+}
+
+async function setHidden(it, hidden) {
+  if (!it) return;
+  const before = it.hidden;
+  it.hidden = hidden;
+  render();
+  if (S.current === it && $('#detail').open) fillDetail(it);
+  try {
+    await api('setHidden', { adminCode: S.admin, id: it.id, hidden });
+    notify(`「${it.name}」を${hidden ? '非表示' : '表示'}にしました`);
+  } catch (err) {
+    it.hidden = before;
+    render();
+    if (S.current === it && $('#detail').open) fillDetail(it);
+    notify('変更できませんでした：' + errText(err), true);
+  }
+}
+
+/** スマホの写真（数MB）を長辺1200pxの JPEG に縮小する。位置情報などの Exif もここで消える */
+function resizeImage(file, max = 1200, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.naturalWidth * scale);
+      canvas.height = Math.round(img.naturalHeight * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('この画像は読み込めませんでした（JPEG や PNG で選んでください）'));
+    };
+    img.src = url;
+  });
+}
+
+async function uploadPhoto(it, file) {
+  const status = $('#dStatus');
+  status.classList.remove('bad');
+  status.textContent = '写真を縮小しています…';
+  try {
+    const dataUrl = await resizeImage(file);
+    status.textContent = 'アップロードしています…（数秒かかります）';
+    const { fileId } = await api('uploadPhoto', { adminCode: S.admin, id: it.id, dataUrl });
+    it.photo = fileId;
+    it._local = dataUrl; // 配信側の準備ができるまで手元の画像を表示
+    render();
+    if (S.current === it) fillDetail(it);
+    notify('写真を登録しました！');
+  } catch (err) {
+    notify('登録できませんでした：' + errText(err), true);
+  }
+}
+
+function exitAdmin() {
+  S.admin = null;
+  S.data = { ...S.data, admin: false, items: S.data.items.filter((i) => !i.hidden) };
+  render();
+  refresh();
+}
+
+// ── 通信 ──
+async function refresh() {
+  try {
+    const res = await api('login', { code: S.code });
+    if (!res.ok) {
+      const hadCode = !!S.code;
+      S.code = '';
+      store.del('code');
+      store.del('menu');
+      if (!S.admin) {
+        S.data = null;
+        showLogin(hadCode ? '合言葉が変わりました。新しい合言葉を入れてください。' : '');
+      }
+      return;
+    }
+    const json = JSON.stringify(res.data);
+    store.set('menu', json);
+    if (S.admin) return; // 管理モード中の表示は上書きしない
+    if (!S.data || json !== JSON.stringify(S.data)) {
+      S.data = res.data;
+      render();
+    }
+  } catch (err) {
+    if (S.data) toast('最新のメニューを読み込めませんでした');
+    else showFatal('読み込みに失敗しました。電波のよいところで開き直してください。\n' + errText(err));
+  }
+}
+
+// ── イベント ──
+$('#loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const code = $('#code').value.trim();
+  if (!code) return;
+  const btn = $('#loginBtn');
+  btn.disabled = true;
+  $('#loginErr').textContent = '';
+  try {
+    const res = await api('login', { code });
+    if (!res.ok) {
+      $('#loginErr').textContent = '合言葉がちがいます';
+      return;
+    }
+    S.code = code;
+    store.set('code', code);
+    store.set('menu', JSON.stringify(res.data));
+    S.data = res.data;
+    render();
+  } catch (err) {
+    $('#loginErr').textContent = '通信に失敗しました：' + errText(err);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+$('#tabs').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-tab]');
+  if (!b || b.dataset.tab === S.tab) return;
+  S.tab = b.dataset.tab;
+  store.set('tab', S.tab);
+  render();
+  const top = $('.noren').offsetHeight;
+  if (window.scrollY > top) window.scrollTo(0, top);
+});
+
+$('#chips').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-jump]');
+  if (b) document.getElementById('sec-' + b.dataset.jump).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+});
+
+$('#main').addEventListener('click', (e) => {
+  const add = e.target.closest('[data-add-cat]');
+  if (add) return openItemForm(null, { tab: S.tab, cat: add.dataset.addCat });
+  const b = e.target.closest('[data-id]');
+  if (b) openDetail(findItem(b.dataset.id));
+});
+
+$('#main').addEventListener('change', (e) => {
+  if (e.target.matches('[data-vis]')) setHidden(findItem(e.target.dataset.vis), !e.target.checked);
+});
+
+$('#omakaseBtn').addEventListener('click', omakase);
+$('#dAgain').addEventListener('click', omakase);
+$('#dClose').addEventListener('click', () => $('#detail').close());
+$('#detail').addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+$('#detail').addEventListener('close', () => { S.spin++; S.current = null; $('#dStatus').textContent = ''; });
+$('#dVis').addEventListener('change', (e) => setHidden(S.current, !e.target.checked));
+$('#dFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (file && S.current) uploadPhoto(S.current, file);
+});
+$('#dEdit').addEventListener('click', () => { if (S.current) openItemForm(S.current); });
+$('#adminAdd').addEventListener('click', () => openItemForm(null, { tab: S.tab, cat: undefined }));
+
+// ── メニューの追加・編集 ──
+const NEW = '__new__';
+const uniq = (arr) => [...new Set(arr)];
+
+function fillTabSelect(selected) {
+  const tabs = uniq(S.data.items.map((i) => i.tab));
+  if (selected && !tabs.includes(selected)) tabs.push(selected);
+  $('#fTab').innerHTML = tabs.map((t) => `<option value="${esc(t)}"${t === selected ? ' selected' : ''}>${esc(t)}</option>`).join('') +
+    `<option value="${NEW}">＋ 新しい区分を作る</option>`;
+  $('#fTabNew').hidden = true;
+  $('#fTabNew').value = '';
+}
+
+/** 選んだ区分にある見出しを並べる。selected が undefined なら最初の見出し */
+function fillCatSelect(tab, selected) {
+  const cats = uniq(S.data.items.filter((i) => i.tab === tab).map((i) => i.cat));
+  if (selected !== undefined && !cats.includes(selected)) cats.push(selected);
+  if (!cats.length) cats.push('');
+  const pick = selected === undefined ? cats[0] : selected;
+  $('#fCat').innerHTML = cats.map((c) => `<option value="${esc(c)}"${c === pick ? ' selected' : ''}>${esc(c || '（見出しなし）')}</option>`).join('') +
+    `<option value="${NEW}">＋ 新しい見出しを作る</option>`;
+  $('#fCatNew').hidden = true;
+  $('#fCatNew').value = '';
+}
+
+/** item を渡すと編集、null なら base の区分・見出しで追加 */
+function openItemForm(item, base = {}) {
+  S.editing = item;
+  const src = item || { tab: base.tab, cat: base.cat, name: '', price: null, limited: '', note: '' };
+  $('#itemTitle').textContent = item ? 'メニューを編集' : 'メニューを追加';
+  $('#itemOk').textContent = item ? '保存する' : '追加する';
+  fillTabSelect(src.tab);
+  fillCatSelect(src.tab, src.cat);
+  $('#fName').value = src.name;
+  $('#fPrice').value = src.price === null || src.price === undefined ? '' : String(src.price);
+  $('#fLimited').value = src.limited || '';
+  $('#fNote').value = src.note || '';
+  $('#itemErr').textContent = '';
+  $('#itemDlg').showModal();
+  if (!item) $('#fName').focus();
+}
+
+$('#fTab').addEventListener('change', () => {
+  const isNew = $('#fTab').value === NEW;
+  $('#fTabNew').hidden = !isNew;
+  fillCatSelect(isNew ? NEW : $('#fTab').value);
+  if (isNew) $('#fTabNew').focus();
+});
+$('#fCat').addEventListener('change', () => {
+  const isNew = $('#fCat').value === NEW;
+  $('#fCatNew').hidden = !isNew;
+  if (isNew) $('#fCatNew').focus();
+});
+$('#itemCancel').addEventListener('click', () => $('#itemDlg').close());
+
+$('#itemForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const tab = $('#fTab').value === NEW ? $('#fTabNew').value.trim() : $('#fTab').value;
+  const cat = $('#fCat').value === NEW ? $('#fCatNew').value.trim() : $('#fCat').value;
+  const item = {
+    tab, cat,
+    name: $('#fName').value.trim(),
+    price: $('#fPrice').value.trim(),
+    limited: $('#fLimited').value.trim(),
+    note: $('#fNote').value.trim(),
+  };
+  const problem = !item.tab ? '新しい区分の名前を入れてください'
+    : $('#fCat').value === NEW && !item.cat ? '新しい見出しの名前を入れてください'
+    : !item.name ? 'メニュー名を入れてください' : '';
+  if (problem) {
+    $('#itemErr').textContent = problem;
+    return;
+  }
+
+  const editing = S.editing;
+  const btn = $('#itemOk');
+  btn.disabled = true;
+  $('#itemErr').textContent = '保存しています…';
+  try {
+    const res = editing
+      ? await api('updateItem', { adminCode: S.admin, id: editing.id, item })
+      : await api('addItem', { adminCode: S.admin, item });
+    S.data = res.data;
+    const saved = findItem(editing ? editing.id : res.id);
+    S.tab = saved.tab;
+    store.set('tab', S.tab);
+    render();
+    $('#itemDlg').close();
+    openDetail(saved); // 追加したら、そのまま写真も登録できるように詳細を開く
+    notify(editing ? '保存しました' : '追加しました。写真もここから登録できます');
+  } catch (err) {
+    $('#itemErr').textContent = '保存できませんでした：' + errText(err);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/** 管理モードに入る。うまくいかなければ理由を返す */
+async function enterAdmin(code) {
+  const res = await api('adminLogin', { adminCode: code });
+  if (!res.ok) return '管理者パスコードがちがいます';
+  S.admin = code;
+  S.data = res.data;
+  render();
+  toast('管理モードに入りました');
+  return '';
+}
+
+$('#adminTop').addEventListener('click', async () => {
+  // 管理者パスコードが空欄の設定なら、合言葉でそのまま入る
+  if (S.data && S.data.adminOpen) {
+    const btn = $('#adminTop');
+    btn.disabled = true;
+    try {
+      const reason = await enterAdmin(S.code);
+      if (reason) toast(reason);
+    } catch (err) {
+      toast('通信に失敗しました：' + errText(err));
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
+  $('#adminCode').value = '';
+  $('#adminErr').textContent = '';
+  $('#adminDlg').showModal();
+});
+$('#adminCancel').addEventListener('click', () => $('#adminDlg').close());
+$('#adminForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const code = $('#adminCode').value.trim();
+  if (!code) return;
+  const btn = $('#adminOk');
+  btn.disabled = true;
+  $('#adminErr').textContent = '';
+  try {
+    const reason = await enterAdmin(code);
+    if (reason) $('#adminErr').textContent = reason;
+    else $('#adminDlg').close();
+  } catch (err) {
+    $('#adminErr').textContent = '通信に失敗しました：' + errText(err);
+  } finally {
+    btn.disabled = false;
+  }
+});
+$('#adminExit').addEventListener('click', exitAdmin);
+
+let toastTimer;
+function toast(message) {
+  const t = $('#toast');
+  t.textContent = message;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── 起動 ──
+(function boot() {
+  S.code = store.get('code') || '';
+  S.tab = store.get('tab');
+  let cached = null;
+  try { cached = JSON.parse(store.get('menu') || 'null'); } catch (e) { /* 壊れていたら使わない */ }
+
+  // 前回のメニューをすぐ出して、裏で最新を取りにいく。
+  // 合言葉をまだ入れていなくても一度問い合わせ、合言葉が必要なら入力画面にする（合言葉なしの設定なら、そのまま開く）
+  if (cached && cached.items) {
+    S.data = cached;
+    render();
+  } else {
+    showLoading();
+  }
+  refresh();
+})();
+</script>
+</body>
+</html>
